@@ -1,0 +1,199 @@
+{
+  "Protocol": {
+    "Modbus_TCP": {
+      "XY-MD02": {
+        "Device_IP": "192.168.127.254",
+        "Device_Port": 502,
+        "unitID": 2,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "Device Address", "Unit":  null, "StartAddress":  257, "DataType": "uint16", "WordLength": 1, "Multiplier": 0},
+            "2": {"Data_Name": "Baudrate", "Unit":  null, "StartAddress":  258, "DataType": "uint16", "WordLength": 1, "Multiplier": 0},
+            "3": {"Data_Name": "Tempurature Correction", "Unit": "oC", "StartAddress": 259, "DataType": "int16", "WordLength": 1, "Multiplier": -1},
+            "4": {"Data_Name": "Humidity Correction", "Unit": "%RH", "StartAddress": 260, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "read_input_registers": {
+            "1": {"Data_Name": "Tempurature", "Unit": "oC", "StartAddress": 1, "DataType": "int16", "WordLength": 1, "Multiplier": -1},
+            "2": {"Data_Name": "Humidity", "Unit": "%RH", "StartAddress": 2, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "write_coil": null,
+          "write_single_register": {
+            "1": {"Data_Name": "Device Address", "Unit":  null, "StartAddress": 257, "DataType": "uint16", "WordLength": 1, "DataValue": "input", "Multiplier": 0},
+            "2": {"Data_Name": "Baudrate", "Unit":  null, "StartAddress": 258, "DataType": "uint16", "WordLength": 1, "DataValue": "input", "Multiplier": 0}
+          },
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "DixellXR60CX": {
+        "Device_IP": "192.168.127.254",
+        "Device_Port": 502,
+        "unitID": 1,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "Tempurature", "Unit": "oC", "StartAddress": 256, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "read_input_registers": null,
+          "write_coil": null,
+          "write_single_register": null,
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "Relay_Modbus_1CH": {
+        "Device_IP": "192.168.127.254",
+        "Device_Port": 502,
+        "unitID": 4,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "BaudRate", "Unit": null, "StartAddress": 1000, "DataType": "uint16", "WordLength": 1, "Multiplier": 0}
+          },
+          "read_input_registers": null,
+          "write_single_coil": {
+            "1": {"Data_Name": "OnRelay", "Unit": null, "StartAddress": 0, "DataType": "uint16", "WordLength": 1, "DataValue": 1, "Multiplier": 0},
+            "2": {"Data_Name": "OffRelay", "Unit": null, "StartAddress": 0, "DataType": "uint16", "WordLength": 1, "DataValue": 0, "Multiplier": 0}
+          },
+          "write_single_register": null,
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "Relay_Modbus_2CH": {
+        "Device_IP": "192.168.127.254",
+        "Device_Port": 502,
+        "unitID": 5,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "BaudRate", "Unit": null, "StartAddress": 254, "DataType": "uint16", "WordLength": 1, "Multiplier": 0},
+            "2": {"Data_Name": "OutputPortSatus1", "Unit": null, "StartAddress": 0, "DataType": "bool", "WordLength": 2, "Multiplier": 0},
+            "3": {"Data_Name": "OutputPortSatus2", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "Multiplier": 0},
+            "4": {"Data_Name": "IntervalTime", "Unit": "ms", "StartAddress": 251, "DataType": "uint16", "WordLength": 1, "Multiplier": 0}
+          },
+          "read_input_register": null,
+          "write_coil": null,
+          "write_single_coil": null,
+          "write_single_register": {
+            "1": {"Data_Name": "OutputPortSatus1", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 0, "Multiplier": 0},
+            "2": {"Data_Name": "OutputPortSatus2", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 1, "Multiplier": 0},
+            "3": {"Data_Name": "OutputPortSatus3", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 2, "Multiplier": 0},
+            "4": {"Data_Name": "OutputPortSatus4", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 3, "Multiplier": 0}
+          },
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      }
+    },
+    "Modbus_RTU": {
+      "XY-MD02": {
+        "Device_Port": "/dev/ttyAMA0",
+        "unitID": 2,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "Device Address", "Unit":  null, "StartAddress":  257, "DataType": "int16", "WordLength": 1, "Multiplier": 0},
+            "2": {"Data_Name": "Baudrate", "Unit":  null, "StartAddress":  258, "DataType": "uint16", "WordLength": 1, "Multiplier": 0},
+            "3": {"Data_Name": "Tempurature Correction", "Unit": "oC", "StartAddress": 259, "DataType": "int16", "WordLength": 1, "Multiplier": -1},
+            "4": {"Data_Name": "Humidity Correction", "Unit": "%RH", "StartAddress": 260, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "read_input_registers": {
+            "1": {"Data_Name": "Tempurature", "Unit": "oC", "StartAddress": 1, "DataType": "int16", "WordLength": 1, "Multiplier": -1},
+            "2": {"Data_Name": "Humidity", "Unit": "%RH", "StartAddress": 2, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "write_coil": null,
+          "write_single_register": {
+            "1": {"Data_Name": "Device Address", "Unit":  null, "StartAddress": 257, "DataType": "uint16", "WordLength": 1, "DataValue": "input"},
+            "2": {"Data_Name": "Baudrate", "Unit":  null, "StartAddress": 258, "DataType": "uint16", "WordLength": 1, "DataValue": "input"}
+          },
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "DixellXR60CX": {
+        "Device_Port": "/dev/ttyUSB0",
+        "unitID": 1,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "Tempurature", "Unit": "oC", "StartAddress": 256, "DataType": "int16", "WordLength": 1, "Multiplier": -1}
+          },
+          "read_input_registers": null,
+          "write_coil": null,
+          "write_single_register": null,
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "Relay_Modbus_1CH": {
+        "Device_Port": "/dev/ttyUSB0",
+        "unitID": 4,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "BaudRate", "Unit": "bit/s", "StartAddress": 1000, "DataType": "uint16", "WordLength": 1, "Multiplier": 0}
+          },
+          "read_input_registers": null,
+          "write_single_coil": {
+            "1": {"Data_Name": "OnRelay", "Unit": null, "StartAddress": 0, "DataType": "uint16", "WordLength": 1, "DataValue": 1, "Multiplier": 0},
+            "2": {"Data_Name": "OffRelay", "Unit": null, "StartAddress": 0, "DataType": "uint16", "WordLength": 1, "DataValue": 0, "Multiplier": 0}
+          },
+          "write_single_register": null,
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      },
+      "Relay_Modbus_2CH": {
+        "Device_Port": "/dev/ttyAMA0",
+        "unitID": 5,
+        "scanningCycleInSecond": 5,
+        "minResponseTimeInMiliSecond": 10000,
+        "tasks": {
+          "read_coils": null,
+          "read_discrete_inputs": null,
+          "read_holding_registers": {
+            "1": {"Data_Name": "BaudRate", "Unit": null, "StartAddress": 254, "DataType": "uint16", "WordLength": 1, "Multiplier": 0},
+            "2": {"Data_Name": "OutputPortSatus1", "Unit": null, "StartAddress": 0, "DataType": "bool", "WordLength": 2, "Multiplier": 0},
+            "3": {"Data_Name": "OutputPortSatus2", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "Multiplier": 0},
+            "4": {"Data_Name": "IntervalTime", "Unit": "ms", "StartAddress": 251, "DataType": "uint16", "WordLength": 1, "Multiplier": 0}
+          },
+          "read_input_register": null,
+          "write_coil": null,
+          "write_single_coil": null,
+          "write_single_register": {
+            "1": {"Data_Name": "OutputPortSatus1", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 0, "Multiplier": 0},
+            "2": {"Data_Name": "OutputPortSatus2", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 1, "Multiplier": 0},
+            "3": {"Data_Name": "OutputPortSatus3", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 2, "Multiplier": 0},
+            "4": {"Data_Name": "OutputPortSatus4", "Unit": null, "StartAddress": 112, "DataType": "bit", "WordLength": 1, "DataValue": 3, "Multiplier": 0}
+          },
+          "write_multiple_coils": null,
+          "write_multiple_registers": null
+        }
+      }
+    }
+  }
+}
+
