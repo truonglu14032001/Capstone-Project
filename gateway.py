@@ -1,4 +1,6 @@
 import json
+import time
+import threading
 from pymodbus import pymodbus_apply_logging_config
 from pymodbus.client import (
     ModbusSerialClient,
@@ -14,7 +16,7 @@ def display_menu(title, options):
     print(title + ":")
     for i, option in enumerate(options, 1):
         print(f"{i}. {option}")
-    return input(f"Vui lòng chọn {title.split(' ')[-1]} (hoặc 'q' để quay lại): ")
+    return input(f"Select {title.split(' ')[-1]} (or 'q' to quit): ")
 
 """def display_data_details(data, protocol, device, task, data_name):
     device_data = data["Protocol"][protocol][device]  # Add this line to access device-level info
@@ -32,20 +34,20 @@ def display_menu(title, options):
 
 def modbus_setup(data, protocol, device):
     device_data = data["Protocol"][protocol][device]
-    pymodbus_apply_logging_config("DEBUG")
+    #pymodbus_apply_logging_config("DEBUG")
     if protocol == "Modbus_TCP":
         client = ModbusTcpClient(
             host=device_data.get('Device_IP'),
             port=device_data.get('Device_Port'),
             framer=ModbusSocketFramer,
-            timeout=10,
+            timeout=device_data.get('minResponseTimeInSecond'),
         )
     elif protocol == "Modbus_RTU":
         client = ModbusSerialClient(
             port=device_data.get('Device_Port'),
             framer=ModbusRtuFramer,
-            timeout=10,
-            baudrate=9600,
+            timeout=device_data.get('minResponseTimeInSecond'),
+            baudrate=device_data.get('Baudrate'),
             bytesize=8,
             parity="N",
             stopbits=1,
@@ -259,54 +261,86 @@ def execute_task(data, protocol, device, task, data_name):
             print("Write successful")
             client.close()
 
+def continuous_reading_thread(data, protocol, device, task, data_name):
+    device_data = data["Protocol"][protocol][device]
+    while reading_continuously:
+        execute_task(data, protocol, device, task, data_name)
+        time.sleep(device_data.get('scanningCycleInSecond'))
+
 def main():
+    global reading_continuously
+    reading_continuously = False
     with open("config.json", "r") as file:
         data = json.load(file)
 
     while True:
         protocols = list(data["Protocol"].keys())
-        protocol_choice = display_menu("Danh sách Protocol", protocols)
+        protocol_choice = display_menu("Protocol List", protocols)
 
         if protocol_choice == 'q':
             break
         if not protocol_choice.isdigit() or int(protocol_choice) > len(protocols):
-            print("Lựa chọn không hợp lệ, vui lòng chọn lại.")
+            print("Invalid selection, please select again.")
             continue
         chosen_protocol = protocols[int(protocol_choice) - 1]
 
         devices = list(data["Protocol"][chosen_protocol].keys())
-        device_choice = display_menu("Danh sách thiết bị trong Protocol", devices)
+        device_choice = display_menu("List of devices in Protocol", devices)
 
         if device_choice == 'q':
             continue
         if not device_choice.isdigit() or int(device_choice) > len(devices):
-            print("Lựa chọn không hợp lệ, vui lòng chọn lại.")
+            print("Invalid selection, please select again.")
             continue
         chosen_device = devices[int(device_choice) - 1]
 
         tasks = list(data["Protocol"][chosen_protocol][chosen_device]["tasks"].keys())
         tasks_filtered = [task for task in tasks if data["Protocol"][chosen_protocol][chosen_device]["tasks"][task]]  # Filter out null tasks
-        task_choice = display_menu("Danh sách các loại tác vụ cho thiết bị", tasks_filtered)
+        task_choice = display_menu("List of task types for the device", tasks_filtered)
 
         if task_choice == 'q':
             continue
         if not task_choice.isdigit() or int(task_choice) > len(tasks_filtered):
-            print("Lựa chọn không hợp lệ, vui lòng chọn lại.")
+            print("Invalid selection, please select again.")
             continue
         chosen_task = tasks_filtered[int(task_choice) - 1]
 
         data_names = [item["Data_Name"] for item in data["Protocol"][chosen_protocol][chosen_device]["tasks"][chosen_task].values()]
-        data_name_choice = display_menu("Danh sách tác vụ", data_names)
+        data_name_choice = display_menu("Task list", data_names)
 
         if data_name_choice == 'q':
             continue
         if not data_name_choice.isdigit() or int(data_name_choice) > len(data_names):
-            print("Lựa chọn không hợp lệ, vui lòng chọn lại.")
+            print("Invalid selection, please select again.")
             continue
         chosen_data_name = data_names[int(data_name_choice) - 1]
 
-        print(f"Bạn đã chọn: {chosen_protocol} -> {chosen_device} -> {chosen_task} -> {chosen_data_name}")
-        execute_task(data, chosen_protocol, chosen_device, chosen_task, chosen_data_name)
+        print(f"Your selection: {chosen_protocol} -> {chosen_device} -> {chosen_task} -> {chosen_data_name}")
+
+        if chosen_task == 'read_holding_registers' or chosen_task == 'read_input_registers':
+            read_options = ["Read Once", "Read Continuously", "Back"]
+            read_choice = display_menu("Choose reading style", read_options)
+            if read_choice == 'q':
+                continue
+            elif read_choice == '1':
+                execute_task(data, chosen_protocol, chosen_device, chosen_task, chosen_data_name)
+            elif read_choice == '2':
+                reading_continuously = True
+                read_thread = threading.Thread(target=continuous_reading_thread, args=(data, chosen_protocol, chosen_device, chosen_task, chosen_data_name))
+                read_thread.start()
+
+                print("Press Enter to stop continuous reading.")
+                input()
+
+                reading_continuously = False
+                read_thread.join()
+            elif read_choice == '3':
+                continue
+            else:
+                print("Invalid selection, please select again.")
+                continue
+        else:
+            execute_task(data, chosen_protocol, chosen_device, chosen_task, chosen_data_name)
         #display_data_details(data, chosen_protocol, chosen_device, chosen_task, chosen_data_name)
 
 if __name__ == "__main__":
